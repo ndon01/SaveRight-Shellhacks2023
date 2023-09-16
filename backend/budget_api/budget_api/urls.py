@@ -1,5 +1,5 @@
 """
-URL configuration for mysite project.
+URL configuration for budget_api project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -15,10 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
+from budget_api import views
 
 urlpatterns = [
-    path("budget/", include("budget.urls")),
     path('admin/', admin.site.urls),
+    path('budgets/', views.budget_list, name='budget_list'),
+    path('incomes/', views.income_list, name='income_list'),
+    path('expenses/', views.expense_list, name='expense_list'),
+    path('transactions/', views.get_expenses_and_budget, name='expenses_and_budgets'),
+    path('budgets/<int:id>/', views.budget_by_id, name='budget_detail'),
+    path('incomes/<int:id>/', views.income_by_id, name='income_detail'),
+    path('expenses/<int:id>/', views.expense_by_id, name='expense_detail')
 ]
-
