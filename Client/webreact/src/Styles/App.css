@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Langar';
+    src: local('Langar'), url(../Fonts/Langar-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: local('Lato'), url(../Fonts/Lato/Lato-Bold.ttf) format('truetype');
+}
