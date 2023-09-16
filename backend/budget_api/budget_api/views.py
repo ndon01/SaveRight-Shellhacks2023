@@ -31,6 +31,7 @@ def income_list(request):
         serializer = IncomeSerializer(incomes, many=True)
         return JsonResponse(serializer.data, safe=False)
     if request.method == 'POST':
+        print("Recieved")
         serializer = IncomeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

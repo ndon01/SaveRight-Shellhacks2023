@@ -4,6 +4,8 @@ import React, {useState} from "react";
 import Navbar from "../../../Components/Navbar/Navbar";
 import "./Style.css";
 
+import axios from 'axios';
+
 function Home() {
 
   const [TransactionLogState, SetTransactionLog] = useState({});
@@ -43,13 +45,19 @@ function Home() {
     // Post if correct
 
     let postData = {
-      "Name": DepositNameValue,
-      "Amount": DepositAmountValue,
-      "Date": DepositDateValue
+      "name": DepositNameValue,
+      "amount": DepositAmountValue,
+      "date": DepositDateValue
     }
 
     postData = JSON.stringify(postData)
-    alert(postData)
+    axios.post("http://127.0.0.1:8000/incomes/", postData)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   }
 
