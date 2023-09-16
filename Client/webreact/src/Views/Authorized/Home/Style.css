@@ -59,7 +59,7 @@
 }
 
 .InputAreaContainerTitle h2 {
-    font-family: 'Lato';
+    font-family: 'Lato-Bold';
 }
 
 .InputFields {
@@ -77,7 +77,7 @@
 }
 
 .InputQuestionTitle {
-    font-family: 'Lato';
+    font-family: 'Lato-Bold';
     font-size: small;
     width: inherit;
     margin-bottom: -7px;
@@ -88,27 +88,34 @@
     width: inherit;
 }
 
+/*
 .InputQuestionValue input {
     width: 294px;
     border-radius: 10px;
     border-width: 1px;
     padding: 5px;
     margin-left: -2px;
+}*/
+
+.InputQuestionTypeText {
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-width: 1px;
+}
+
+.InputQuestionTypeSelect {
+    width: 100%;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 .InputAreaSubmitContainer {
     margin-top: 20px;
-}
-
-.InputAreaSubmitContainer button {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-inline: 20px;
-    border-radius: 10px;
-    border-color: transparent;
-    background-color: #4D96D9;
-    font-weight:600;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .TransactionLogArea {
@@ -156,12 +163,67 @@
     text-align: center;
 }
 
+.BudgetColumnDataField {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .BudgetStickerContainer {
     background-color: #4D96D9;
     border-radius: 100px;
     border: 0.5px solid black;
-    padding: 5px;
-    font-family: 'Lato';
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-family: 'Lato-Bold';
     font-weight: 100;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.DataFieldClass {
+    font-weight: bold;
+    font-family: 'Lato-Thin';
+}
+
+.DataColumnHeader {
+    font-family: 'Lato-Bold';
+}
+
+.BudgetColorSquare {
+    background-color: #4D96D9;
+    width: 100px;
+}
+
+.RemoveTTableItemImage {
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.ButtonRoundedStyle {
+    display: inline-flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-inline: 20px;
+    border-radius: 10px;
+    border-color: transparent;
+    background-color: #4D96D9;
+    font-weight:600;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ButtonHoverEffect {
+    transition: transform 0.3s;
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+}
+
+.ButtonHoverEffect:hover {
+    transform: scale(1.05);
+}
+
+
+.InvalidField {
+    border-color: red;
 }
