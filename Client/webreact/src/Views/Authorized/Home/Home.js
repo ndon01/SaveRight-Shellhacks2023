@@ -114,9 +114,9 @@ function Home() {
 
         {/*Transactions Table*/}
         <div className="TransactionsTableContainer">
-          <Table striped bordered hover>
+          <Table striped bordered hover variant="dark" className="TransactionsTable">
             <thead>
-              <tr>
+              <tr className="TransactionTableRowWrapper">
                 <th>Title</th>
                 <th>Type</th>
                 <th>Amount</th>
@@ -124,10 +124,17 @@ function Home() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+              <tr className="TransactionTableRowWrapper">
+                <td>Job</td>
+                <td>Deposit</td>
+                <td>+10000</td>
+                <td>-</td>
+              </tr>
+              <tr className="TransactionTableRowWrapper">
+                <td>Club</td>
+                <td>Withdrawl</td>
+                <td>-1200</td>
+                <td><div className="BudgetStickerContainer">Social</div></td>
               </tr>
             </tbody>
           </Table>
