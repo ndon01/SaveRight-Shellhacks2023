@@ -50,7 +50,6 @@ function Home() {
       "date": DepositDateValue
     }
 
-    postData = JSON.stringify(postData)
     axios.post("http://127.0.0.1:8000/incomes/", postData)
     .then(function (response) {
       console.log(response);
