@@ -314,6 +314,7 @@ function Home() {
                 <th></th>
               </tr>
             </thead>
+
             <tbody>
               <tr className="TransactionTableRowWrapper">
                 <td className="DataFieldClass">Job</td>
