@@ -105,14 +105,19 @@ function Home() {
     // Post if correct
 
     let postData = {
-      "Name": WithdrawlNameValue,
-      "Amount": WithdrawlAmountValue,
-      "Date": WithdrawlDateValue,
-      "BudgetType": WithdrawlBudgetTypeValue
+      "name": WithdrawlNameValue,
+      "amount": WithdrawlAmountValue,
+      "date": WithdrawlDateValue,
+      "budget": WithdrawlBudgetTypeValue
     }
 
-    postData = JSON.stringify(postData)
-    alert(postData)
+    axios.post("http://127.0.0.1:8000/expenses/", postData)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   }
 
@@ -152,13 +157,18 @@ function Home() {
     // Post if correct
 
     let postData = {
-      "Name": BudgetNameValue,
-      "Amount": BudgetAmountValue,
-      "Color": BudgetColorValue
+      "name": BudgetNameValue,
+      "amount": BudgetAmountValue,
+      "color": BudgetColorValue
     }
 
-    postData = JSON.stringify(postData)
-    alert(postData)
+    axios.post("http://127.0.0.1:8000/budgets/", postData)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   }
 
