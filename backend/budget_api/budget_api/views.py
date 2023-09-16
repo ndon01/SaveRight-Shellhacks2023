@@ -47,9 +47,13 @@ def expense_list(request):
         expenses = Expense.objects.all().values()
         serializer = ExpenseSerializer(expenses, many=True)
         return JsonResponse(serializer.data, safe=False)
+    
     if request.method == 'POST':
+        if request.data['budget'] == 'None':
+            request.data['budget'] = None
         serializer = ExpenseSerializer(data=request.data)
         if serializer.is_valid():
+            print(f"{request.data}: Valid")
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors)
