@@ -1,0 +1,22 @@
+.Layover {
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.Container {
+    border-radius: 10px;
+    height: 1080px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.BoxContainer {
+    border-radius: 10px;
+    height: 50%;
+    width: 50%;
+    background-color: red;
+    display: flex;
+}

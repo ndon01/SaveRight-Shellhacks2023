@@ -9,12 +9,9 @@ function Navbar() {
   return (
     <nav className="navbarwrapper">
       <div>
-        <button>Home</button>
-        <button>Budget</button>
-        <button>Learn</button>
+      Hi, <b>{value.username}</b>.
       </div>
       <div>
-        {value.username}
         <button onClick={function() {
           localStorage.clear()
           value.setToken('')
