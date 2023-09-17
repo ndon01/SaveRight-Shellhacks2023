@@ -27,7 +27,9 @@ function Login() {
     }
 
     axios.post(GlobalConfig.SaveRightAPIURL + '/register/', data)
-    .then(console.log).catch(console.log)
+    .then(()=> {
+      document.location.href = "/login"
+    }).catch(console.log)
 
     
     return false;
