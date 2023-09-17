@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'budget_api',
     'corsheaders',
     'rest_auth',
-    'ref_framework_simplejwt',    
 ]
 
 
