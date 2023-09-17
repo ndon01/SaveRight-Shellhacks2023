@@ -1,12 +1,23 @@
 from django.http import JsonResponse
 from .models import Budget, Income, Expense
 from .serializers import BudgetSerializer, IncomeSerializer, ExpenseSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from rest_framework.response import Response
+
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework_jwt.settings import api_settings
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserSerializer
+
 
 #get list of all budgets
 @api_view(['GET','POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def budget_list(request):
     #get all budjet from the database
     #serialize them 
@@ -25,6 +36,8 @@ def budget_list(request):
 
 #get list of all incomes
 @api_view(['GET','POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def income_list(request):
     if request.method == 'GET':
         incomes = Income.objects.all().values()
@@ -42,6 +55,8 @@ def income_list(request):
 
 #get list of all expenses
 @api_view(['GET','POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def expense_list(request):
     if request.method == 'GET':
         expenses = Expense.objects.all().values()
@@ -62,6 +77,8 @@ def expense_list(request):
 #get list of all income and expenses
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_expenses_and_budget(request):
     if request.method == 'GET':
         expenses = Expense.objects.all().values()
@@ -73,6 +90,8 @@ def get_expenses_and_budget(request):
 
 #EXPENSE BY ID
 @api_view(['GET','PUT','DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def expense_by_id(request, id):
     try:
         expense = Expense.objects.get(id=id)
@@ -96,6 +115,8 @@ def expense_by_id(request, id):
     
 #INCOME BY ID
 @api_view(['GET','PUT','DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def income_by_id(request, id):
     try:
         income = Income.objects.get(id=id)
@@ -118,6 +139,8 @@ def income_by_id(request, id):
         
 #BUDGET BY ID
 @api_view(['GET','PUT','DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def budget_by_id(request, id):
     try:
         budget = Budget.objects.get(id=id)
@@ -135,4 +158,28 @@ def budget_by_id(request, id):
     elif request.method == 'DELETE':
         budget.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+#USER AUTHENTICATION
+
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            return Response({'token': token}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from budget_api import views
+from django.urls import path
+from .views import RegisterView, LoginView
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +30,7 @@ urlpatterns = [
     path('transactions/', views.get_expenses_and_budget, name='expenses_and_budgets'),
     path('budgets/<int:id>/', views.budget_by_id, name='budget_detail'),
     path('incomes/<int:id>/', views.income_by_id, name='income_detail'),
-    path('expenses/<int:id>/', views.expense_by_id, name='expense_detail')
+    path('expenses/<int:id>/', views.expense_by_id, name='expense_detail'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
 ]
