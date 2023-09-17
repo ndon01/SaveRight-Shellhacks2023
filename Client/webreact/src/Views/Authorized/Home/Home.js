@@ -1,14 +1,17 @@
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../Components/Navbar/Navbar";
 import "./Style.css";
+import PieChartComponent from "../../../Components/piechart";
 
 import GlobalConfig from "../../../Util/Config"
 
 import axios from 'axios';
 
 function Home() {
+  
 
   const [transactions, setTransactions] = useState([])
   const [budgets, setBudgets] = useState([])
@@ -265,12 +268,12 @@ function Home() {
           {/* Deposit Area */}
           <div className="InputAreaContainer">
             <div className="InputAreaContainerTitle">
-              <h2>Track a Deposit</h2>
+              <h2>Track an Income</h2>
             </div>
             <div className="InputFields">
               <div className="InputQuestion">
                 <div className="InputQuestionTitle">
-                  <p>Deposit Name</p>
+                  <p>Income Name</p>
                 </div>
                 <div className="InputQuestionValue">
                   <input id="DepositNameValue" className="InputQuestionTypeText" placeholder="ex: Won the Lotto"></input>
@@ -278,7 +281,7 @@ function Home() {
               </div>
               <div className="InputQuestion">
                 <div className="InputQuestionTitle">
-                  <p>Deposit Amount</p>
+                  <p>Income Amount</p>
                 </div>
                 <div className="InputQuestionValue">
                   <input type="number" id="DepositAmountValue" className="InputQuestionTypeText" placeholder="10000"></input>
@@ -286,7 +289,7 @@ function Home() {
               </div>
               <div className="InputQuestion">
                 <div className="InputQuestionTitle">
-                  <p>Deposit Date</p>
+                  <p>Income Date</p>
                 </div>
                 <div className="InputQuestionValue">
                   <input type="date" id="DepositDateValue" className="InputQuestionTypeText" placeholder="10000"></input>
@@ -297,15 +300,15 @@ function Home() {
               <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createDeposit}>Create Deposit</button>
             </div>
           </div>
-          {/* Withdrawl Area */}
-          <div className="InputAreaContainer">
+                    {/* Withdrawl Area */}
+                    <div className="InputAreaContainer">
             <div className="InputAreaContainerTitle">
-              <h2>Track a Withdrawl</h2>
+              <h2>Track an Expense</h2>
             </div>
             <div className="InputFields">
               <div className="InputQuestion">
                 <div className="InputQuestionTitle">
-                  <p>Withdrawl Name</p>
+                  <p>Expense Name</p>
                 </div>
                 <div className="InputQuestionValue">
                   <input id="WithdrawlNameValue" className="InputQuestionTypeText" placeholder="ex: Won the Lotto"></input>
@@ -313,7 +316,7 @@ function Home() {
               </div>
               <div className="InputQuestion">
                 <div className="InputQuestionTitle">
-                  <p>Withdrawl Amount</p>
+                  <p>Expense Amount</p>
                 </div>
                 <div className="InputQuestionValue">
                   <input type="number" id="WithdrawlAmountValue" className="InputQuestionTypeText" placeholder="10000"></input>
@@ -321,7 +324,7 @@ function Home() {
               </div>
               <div className="InputQuestion">
                 <div className="InputQuestionTitle">
-                  <p>Withdrawl Date</p>
+                  <p>Expense Date</p>
                 </div>
                 <div className="InputQuestionValue">
                   <input type="date" id="WithdrawlDateValue" className="InputQuestionTypeText" placeholder="10000"></input>
@@ -347,6 +350,7 @@ function Home() {
               <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createWithdrawl}>Create Withdrawl</button>
             </div>
           </div>
+
           {/* Budget Area */}
           <div className="InputAreaContainer">
             <div className="InputAreaContainerTitle">
@@ -467,7 +471,7 @@ function Home() {
                           }
                         }).then((data) => {
                           if (data.status === 204) {
-                            
+                        
                             setTransactions(transactions.filter((value) => {
                               return value.id !== transaction.id
                             }))
@@ -480,9 +484,13 @@ function Home() {
                 </>
               })}
             </tbody>
+          
           </Table>
-        </div>
+        </div>        
       </div>
+
+      
+      
     </>
   );
 }

@@ -16,7 +16,7 @@
     font-size: 64px;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #4D96D9;
-    color: #FFFFFF;
+    color: #4D96D9;
     
 }
 
@@ -24,6 +24,7 @@
     font-family: 'CarterOne-Regular';
     font-size: 64px;
     color: #4D96D9;
+    margin-left: 40px;
 }
 
 .InputAreaContainer {

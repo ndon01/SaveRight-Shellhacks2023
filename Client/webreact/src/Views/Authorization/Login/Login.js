@@ -36,10 +36,15 @@ function Login() {
 
   return (
     <div className={styles.PageContainer}>
-      {/*Title*/}
-      <div className={styles.SaveRightLogoContainer}>
-        
-      </div>
+        {/*Title*/}
+        <div>
+            <div className={styles.SaveRightLogoSave}>
+                Save
+            </div>
+            <div className={styles.SaveRightLogoRight}>
+                Right
+            </div>
+        </div>
       {/*Login Form*/}
       <form onSubmit={loginSubmission} id="LoginForm">
         <div className={styles.InputAreaContainer}>

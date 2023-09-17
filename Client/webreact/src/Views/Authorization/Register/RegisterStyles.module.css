@@ -9,11 +9,16 @@
 .SaveRightLogoSave {
     font-family: 'CarterOne-Regular';
     font-size: 64px;
+    color: #4D96D9;
+    padding-bottom: 0;
 }
 
 .SaveRightLogoRight {
     font-family: 'CarterOne-Regular';
     font-size: 64px;
+    color:  #4D96D9;
+    margin-left: 40px;
+    padding-top: -30px;
 }
 
 .InputAreaContainer {

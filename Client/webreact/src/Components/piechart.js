@@ -2,14 +2,12 @@ import React from 'react';
 import { Chart } from 'react-google-charts';
 
 
-export const data = [
-    ["Type", "Net"],
-    ["Income", 11],
-    ["Expenses", 2],
-  ];
-  
-
-const PieChartComponent = ({chartName,data}) => {
+// export const data = [
+//     ["Type", "Net"],
+//     ["Income", 11],
+//     ["Expenses", 2],
+//   ];
+function PieChartComponent({ data, chartName}) {
     return (
         <div className="pie-chart">
             <Chart
