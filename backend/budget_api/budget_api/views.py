@@ -219,6 +219,14 @@ def expense_by_user(request):
         serializer = ExpenseSerializer(expenses, many=True)
         return Response(serializer.data)
     
+@api_view(['GET'])
+@check_token()
+def get_userInfo(request):
+    if request.method == "GET":
+        thisUser = request.user
+        serializer = UserSerializer(thisUser)
+        return Response(serializer.data)
+    
 #USER AUTHENTICATION
 class RegisterView(APIView):
     def post(self, request):

@@ -36,4 +36,5 @@ urlpatterns = [
     path('budgets/user/', views.budget_by_user, name='budget_by_user'),
     path('incomes/user/', views.income_by_user, name='income_by_user'),
     path('expenses/user/', views.expense_by_user, name='expense_by_user'),
+    path('userInfo/', views.get_userInfo, name='get_userInfo'),
 ]
