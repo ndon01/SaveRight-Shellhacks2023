@@ -13,11 +13,32 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer
 import jwt
-import bcrypt
 import time
+from functools import wraps
 
+def check_token():
+    def decorator(view):
+        @wraps(view)
+        def _wrapped_view(request, *args, **kwargs):
+            token = request.headers['Authorization']
+            payload = None
+            try:
+                payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            except jwt.exceptions.DecodeError:
+                return Response({'error': 'Token invalid'}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            thisUser = User.objects.get(username=payload['username'])
+            if thisUser is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)   
+            
+            request.user = thisUser         
+            return view(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
+    
 #get list of all budgets
 @api_view(['GET','POST'])
+@check_token()
 def budget_list(request):
     #get all budjet from the database
     #serialize them 
@@ -28,23 +49,26 @@ def budget_list(request):
         return JsonResponse(serializer.data, safe=False)
 
     if request.method == 'POST':
+        request.data['username'] = request.user.get_username()
         serializer = BudgetSerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors)
+    
 
 #get list of all incomes
 @api_view(['GET','POST'])
+@check_token()
 def income_list(request):
     if request.method == 'GET':
         incomes = Income.objects.all().values()
         serializer = IncomeSerializer(incomes, many=True)
         return JsonResponse(serializer.data, safe=False)
     if request.method == 'POST':
-        print("Recieved")
+        request.data['username'] = request.user.get_username()
         serializer = IncomeSerializer(data=request.data)
-        print(request.data.keys())
         if serializer.is_valid():
             print("Valid")
             serializer.save()
@@ -53,6 +77,7 @@ def income_list(request):
 
 #get list of all expenses
 @api_view(['GET','POST'])
+@check_token()
 def expense_list(request):
     if request.method == 'GET':
         expenses = Expense.objects.all().values()
@@ -60,6 +85,7 @@ def expense_list(request):
         return JsonResponse(serializer.data, safe=False)
     
     if request.method == 'POST':
+        request.data['username'] = request.user.get_username()
         if request.data['budget'] == 'None':
             request.data['budget'] = None
         serializer = ExpenseSerializer(data=request.data)
@@ -73,10 +99,17 @@ def expense_list(request):
 #get list of all income and expenses
 
 @api_view(['GET'])
+@check_token()
 def get_expenses_and_budget(request):
+    try:
+        expenses = Expense.objects.filter(username=request.user.get_username())
+        incomes = Income.objects.filter(username=request.user.get_username())
+        print(expenses)
+        print(incomes)
+    except Expense.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
     if request.method == 'GET':
-        expenses = Expense.objects.all().values()
-        incomes = Income.objects.all().values()
         e_Serializer = ExpenseSerializer(expenses, many=True)
         i_serializer = IncomeSerializer(incomes, many=True)
         return JsonResponse({'expenses': e_Serializer.data, 'incomes': i_serializer.data}, safe=False)
@@ -84,9 +117,11 @@ def get_expenses_and_budget(request):
 
 #EXPENSE BY ID
 @api_view(['GET','PUT','DELETE'])
+@check_token()
 def expense_by_id(request, id):
     try:
-        expense = Expense.objects.get(id=id)
+        expenses = Expense.objects.get(username=request.user.get_username())
+        expense = expenses.get(id=id)
     except Expense.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -107,9 +142,12 @@ def expense_by_id(request, id):
     
 #INCOME BY ID
 @api_view(['GET','PUT','DELETE'])
+@check_token()
 def income_by_id(request, id):
     try:
-        income = Income.objects.get(id=id)
+        thisUser = request.user
+        incomes = Income.objects.get(username=thisUser.get_username())
+        income = incomes.get(id=id)
     except Income.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -129,26 +167,42 @@ def income_by_id(request, id):
         
 #BUDGET BY ID
 @api_view(['GET','PUT','DELETE'])
+@check_token()
 def budget_by_id(request, id):
     try:
-        budget = Budget.objects.get(id=id)
+        thisUser = request.user
+        budgets_of_user = Budget.objects.filter(username=thisUser.get_username())
+        budget = budgets_of_user.get(id=id)
     except Budget.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == 'GET':
         serializer = BudgetSerializer(budget)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    
     elif request.method == 'PUT':
         serializer = BudgetSerializer(budget, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
     elif request.method == 'DELETE':
+        
         budget.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
 
+    
+@api_view(['GET'])
+@check_token()
+def budget_by_user(request):
+    print(request.data)
+    if request.method == 'GET':
+        thisUser = request.user
+        budgets = Budget.objects.filter(username=thisUser.get_username())
+        serializer = BudgetSerializer(budgets, many=True)
+        return Response(serializer.data)
+    
 #USER AUTHENTICATION
-
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -161,18 +215,14 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        print("Login")
-        print()
         username = request.data.get('username')
         password = request.data.get('password')
 
-        print(username, password)
         user = authenticate(request, username=username, password=password)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
         username = user.get_username()
         encoded = jwt.encode({"username": username}, "secret", algorithm="HS256")
         print(encoded)
-        return Response({'token': encoded}, status=status.HTTP_200_OK)
+        return Response({'token': encoded,'username':username}, status=status.HTTP_200_OK)
 

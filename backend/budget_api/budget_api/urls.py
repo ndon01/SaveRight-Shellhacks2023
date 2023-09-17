@@ -33,4 +33,5 @@ urlpatterns = [
     path('expenses/<int:id>/', views.expense_by_id, name='expense_detail'),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
+    path('budgets/user/', views.budget_by_user, name='budget_by_user'),
 ]
