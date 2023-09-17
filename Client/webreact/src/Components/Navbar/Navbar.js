@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Style.css'
 
+import { userContext } from '../../Context/UserContext'
+
 function Navbar() {
+  const value = useContext(userContext)
   return (
     <nav className="navbarwrapper">
       <div>
@@ -10,8 +13,7 @@ function Navbar() {
         <button>Learn</button>
       </div>
       <div>
-        <button>Settings</button>
-        <button>Profile</button>
+        {value.token}
       </div>
     </nav>
   
