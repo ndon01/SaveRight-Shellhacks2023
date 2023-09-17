@@ -15,6 +15,11 @@ function Navbar() {
       </div>
       <div>
         {value.username}
+        <button onClick={function() {
+          localStorage.clear()
+          value.setToken('')
+          value.setUsername('')
+        }}>logout</button>
       </div>
     </nav>
   

@@ -11,6 +11,8 @@ import axios from 'axios';
 function Home() {
 
   const [transactions, setTransactions] = useState([])
+  const [budgets, setBudgets] = useState([])
+
 
   useEffect(() => {
     axios.get(GlobalConfig.SaveRightAPIURL + "/transactions/", {
@@ -34,6 +36,22 @@ function Home() {
         
         }
         setTransactions(newData)
+        console.log(newData)
+      }
+    }).catch(console.log)
+    axios.get(GlobalConfig.SaveRightAPIURL + "/budgets/user/", {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    }).then((data) => {
+      if(data.status === 200) {
+        let newData = []
+        
+        for (let i = 0; i < data.data.length; i++) {
+          let data = data.data[i]
+          newData[newData.length] = data
+        }
+        setBudgets(newData)
         console.log(newData)
       }
     }).catch(console.log)
@@ -154,7 +172,7 @@ function Home() {
       
     }
 
-    axios.post(GlobalConfig.SaveRightAPIURL + "expenses/", postData, {
+    axios.post(GlobalConfig.SaveRightAPIURL + "/expenses/", postData, {
       headers: {
         Authorization: localStorage.getItem("token")
       }
@@ -221,7 +239,12 @@ function Home() {
       }
     })
     .then(function (response) {
-      console.log(response);
+      if (response.status === 201) {
+        let data = response.data
+        
+        setBudgets(budgets.concat(data))
+        console.log(transactions)
+      }
     })
     .catch(function (error) {
       console.log(error);
@@ -310,7 +333,11 @@ function Home() {
                 </div>
                 <div className="InputQuestionValue">
                   <select id="WithdrawlBudgetTypeValue" className="InputQuestionTypeSelect">
-                    <option value="None">None</option>
+                  <option value="None">None</option>
+                    {budgets.map(function(v, i){
+                      return <option key={i} value={v.id}>{v.name}</option>
+                    })}
+                    
                   </select>
                 </div>
               </div>
@@ -394,6 +421,20 @@ function Home() {
             <tbody>
               {transactions.map(function(transaction, i) {
                 console.log(transaction)
+
+                let budgetName = ""
+                let budgetColor = ""
+
+                if (transaction["budget"]) {
+                  for (let i = 0; i < budgets.length; i++) {
+                    if (budgets[i].id == transaction.budget) {
+                      
+                      budgetName = budgets[i].name
+                      budgetColor = budgets[i].color
+                    }
+                  }
+                }
+
                 return <>
                   <tr key={i} className="TransactionTableRowWrapper">
                     <td className="DataFieldClass">{transaction.date}</td>
@@ -401,7 +442,7 @@ function Home() {
                     <td  className="DataFieldClass">{transaction.transactionType}</td>
                     <td  className="DataFieldClass">{transaction.transactionType === "income" ? "+" : "-"}{transaction.amount}</td>
                     <td className="BudgetColumnDataField">
-                      <div  className="BudgetStickerContainer">Social</div>
+                      {budgetName !== "" ? <div style={{backgroundColor:budgetColor.toLocaleLowerCase()}} className="BudgetStickerContainer">{budgetName}</div> : "-"}
                     </td>
                     <td ><img  src="remove.png" className="RemoveTTableItemImage ButtonHoverEffect" onClick={function(){
                       if(transaction.transactionType === "income") {
@@ -412,10 +453,8 @@ function Home() {
                         }).then((data) => {
                           if (data.status === 204) {
                             
-                            setTransactions(transactions.map((target) => {
-                              if (transaction.id !== target.id) {
-                               return target 
-                              }
+                            setTransactions(transactions.filter((value) => {
+                              return value.id !== transaction.id
                             }))
                             console.log(transactions)
                           }
