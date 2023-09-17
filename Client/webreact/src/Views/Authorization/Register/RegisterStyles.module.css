@@ -103,3 +103,6 @@
     -webkit-transform-style: preserve-3d;
     -webkit-backface-visibility: hidden;
 }
+.ButtonHoverEffect:hover {
+    transform: scale(1.05);
+}

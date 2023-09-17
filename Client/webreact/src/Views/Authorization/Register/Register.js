@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from "./RegisterStyles.module.css"
 import axios from 'axios';
-
+import { Link } from "react-router-dom";
 import GlobalConfig from '../../../Util/Config'
 
 function Login() {
@@ -11,8 +11,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [confirmationPassword, setConfirmPassword] = useState("");
 
-  function loginSubmission() {
-
+  function loginSubmission(e) {
+    e.preventDefault();
     var Password = document.getElementById("PasswordValue")
     var ConfirmPassword = document.getElementById("ConfirmPasswordValue")
 
@@ -27,6 +27,7 @@ function Login() {
     axios.post(GlobalConfig.SaveRightAPIURL + '/register/', data)
     .then(console.log).catch(console.log)
 
+    
     return false;
   }
 
@@ -107,6 +108,20 @@ function Login() {
                 </div>
             </div>
         </form>
+        <div className={styles.InputAreaSubmitContainer}>
+        <div
+          className={
+            styles.ButtonRoundedStyle + "\n" + styles.ButtonHoverEffect
+          }
+        >
+          <Link
+            style={{ textDecoration: "None", color: "black" }}
+            to={"/login/"}
+          >
+            Log into an Account here
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }
