@@ -12,12 +12,12 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer
-
+import jwt
+import bcrypt
+import time
 
 #get list of all budgets
 @api_view(['GET','POST'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def budget_list(request):
     #get all budjet from the database
     #serialize them 
@@ -36,8 +36,6 @@ def budget_list(request):
 
 #get list of all incomes
 @api_view(['GET','POST'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def income_list(request):
     if request.method == 'GET':
         incomes = Income.objects.all().values()
@@ -55,8 +53,6 @@ def income_list(request):
 
 #get list of all expenses
 @api_view(['GET','POST'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def expense_list(request):
     if request.method == 'GET':
         expenses = Expense.objects.all().values()
@@ -77,8 +73,6 @@ def expense_list(request):
 #get list of all income and expenses
 
 @api_view(['GET'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def get_expenses_and_budget(request):
     if request.method == 'GET':
         expenses = Expense.objects.all().values()
@@ -90,8 +84,6 @@ def get_expenses_and_budget(request):
 
 #EXPENSE BY ID
 @api_view(['GET','PUT','DELETE'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def expense_by_id(request, id):
     try:
         expense = Expense.objects.get(id=id)
@@ -115,8 +107,6 @@ def expense_by_id(request, id):
     
 #INCOME BY ID
 @api_view(['GET','PUT','DELETE'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def income_by_id(request, id):
     try:
         income = Income.objects.get(id=id)
@@ -139,8 +129,6 @@ def income_by_id(request, id):
         
 #BUDGET BY ID
 @api_view(['GET','PUT','DELETE'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
 def budget_by_id(request, id):
     try:
         budget = Budget.objects.get(id=id)
@@ -170,17 +158,21 @@ class RegisterView(APIView):
                 return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class LoginView(APIView):
     def post(self, request):
+        print("Login")
+        print()
         username = request.data.get('username')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-            payload = jwt_payload_handler(user)
-            token = jwt_encode_handler(payload)
-            print(f"User Logged in: {token}")
-            return Response({'token': token}, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        print(username, password)
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        username = user.get_username()
+        encoded = jwt.encode({"username": username}, "secret", algorithm="HS256")
+        print(encoded)
+        return Response({'token': encoded}, status=status.HTTP_200_OK)
+
