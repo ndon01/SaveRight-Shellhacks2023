@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./LoginStyles.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import GlobalConfig from "../../../Util/Config";
 
+import { userContext } from '../../../Context/UserContext'
+
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const value = useContext(userContext)
+  console.log(value)
   function loginSubmission(e) {
     e.preventDefault();
     var UsernameInput = username;
@@ -23,6 +27,7 @@ function Login() {
       .then((data) => {
         console.log(data.data.token);
         localStorage.setItem("token", data.data.token)
+        value.setToken(data.data.token)
       })
       .catch(console.log);
 
@@ -84,17 +89,10 @@ function Login() {
         </div>
       </form>
       <div className={styles.InputAreaSubmitContainer}>
-        <div
-          className={
-            styles.ButtonRoundedStyle + "\n" + styles.ButtonHoverEffect
-          }
-        >
-          <Link
-            style={{ textDecoration: "None", color: "black" }}
-            to={"/register/"}
-          >
+        <div>
+            <Link To={'/register/'}>
             Create an Account Here
-          </Link>
+            </Link>
         </div>
       </div>
     </div>
