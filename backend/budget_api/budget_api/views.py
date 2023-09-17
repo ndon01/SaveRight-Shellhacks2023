@@ -195,27 +195,38 @@ def budget_by_id(request, id):
 @api_view(['GET'])
 @check_token()
 def budget_by_user(request):
-    print(request.data)
-    if request.method == 'GET':
+    try:
         thisUser = request.user
         budgets = Budget.objects.filter(username=thisUser.get_username())
+    except Budget.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
         serializer = BudgetSerializer(budgets, many=True)
         return Response(serializer.data)
     
 @api_view(['GET'])
 @check_token()
 def income_by_user(request):
-    if request.method == "GET":
+    try:
         thisUser = request.user
         incomes = Income.objects.filter(username=thisUser.get_username())
+    except Income.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    if request.method == "GET":
         serializer = IncomeSerializer(incomes, many=True)
         return Response(serializer.data)
 @api_view(['GET'])
 @check_token()
 def expense_by_user(request):
-    if request.method == "GET":
+    try:
         thisUser = request.user
         expenses = Expense.objects.filter(username=thisUser.get_username())
+    except Expense.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    if request.method == "GET":
+
         serializer = ExpenseSerializer(expenses, many=True)
         return Response(serializer.data)
     
