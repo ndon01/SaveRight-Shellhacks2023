@@ -10,8 +10,9 @@ export const data = [
     ["Watch TV", 2],
     ["Sleep", 7],
   ];
+  
 
-const PieChartComponent = () => {
+const PieChartComponent = ({chartName,data}) => {
     return (
         <div className="pie-chart">
             <Chart
@@ -21,7 +22,7 @@ const PieChartComponent = () => {
                 loader={<div>Loading Chart</div>}
                 data={data}
                 options={{
-                    title: 'Expenses',
+                    title: chartName,
                     is3D: false,
                 }}
             />
