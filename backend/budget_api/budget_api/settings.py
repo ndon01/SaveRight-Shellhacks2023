@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'budget_api',
     'corsheaders',
-    'rest_auth',]
+    'rest_auth',
+    'ref_framework_simplejwt',    
+]
 
 
 
