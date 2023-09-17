@@ -18,6 +18,7 @@ import axios from 'axios';
 import GlobalConfig from "./Util/Config";
 
 
+import PieChartComponent from './Components/piechart';
 
 function App() {
 
@@ -63,7 +64,7 @@ function App() {
                     <Route path="/home" element={<Home/>} />
             </>
           }
-
+        <Route path="/pieChart" element={<PieChartComponent/>} />
           <Route path="*" element={<PageNotFound/>} />
         </Routes>
         </BrowserRouter>
