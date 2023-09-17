@@ -202,6 +202,23 @@ def budget_by_user(request):
         serializer = BudgetSerializer(budgets, many=True)
         return Response(serializer.data)
     
+@api_view(['GET'])
+@check_token()
+def income_by_user(request):
+    if request.method == "GET":
+        thisUser = request.user
+        incomes = Income.objects.filter(username=thisUser.get_username())
+        serializer = IncomeSerializer(incomes, many=True)
+        return Response(serializer.data)
+@api_view(['GET'])
+@check_token()
+def expense_by_user(request):
+    if request.method == "GET":
+        thisUser = request.user
+        expenses = Expense.objects.filter(username=thisUser.get_username())
+        serializer = ExpenseSerializer(expenses, many=True)
+        return Response(serializer.data)
+    
 #USER AUTHENTICATION
 class RegisterView(APIView):
     def post(self, request):
