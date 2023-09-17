@@ -1,6 +1,6 @@
 import Table from "react-bootstrap/Table";
 
-import React, {useState} from "react";
+import React from "react";
 import Navbar from "../../../Components/Navbar/Navbar";
 import "./Style.css";
 
@@ -8,7 +8,6 @@ import axios from 'axios';
 
 function Home() {
 
-  const [TransactionLogState, SetTransactionLog] = useState({});
 
   function createDeposit() {
     const DepositNameElement = document.getElementById("DepositNameValue");

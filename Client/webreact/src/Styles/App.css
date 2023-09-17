@@ -12,3 +12,8 @@
     font-family: 'Lato-Thin';
     src: local('Lato-Thin'), url(../Fonts/Lato/Lato-Thin.ttf) format('truetype');
 }
+
+@font-face {
+    font-family: 'CarterOne-Regular';
+    src: local('CarterOne-Regular'), url(../Fonts/CarterOne-Regular.ttf) format('truetype');
+}

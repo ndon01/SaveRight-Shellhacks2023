@@ -1,0 +1,105 @@
+.PageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100%;
+}
+
+.SaveRightLogoSave {
+    font-family: 'CarterOne-Regular';
+    font-size: 64px;
+}
+
+.SaveRightLogoRight {
+    font-family: 'CarterOne-Regular';
+    font-size: 64px;
+}
+
+.InputAreaContainer {
+    background-color: #FFFFFF;
+    border: 0.5px solid #4D96D9;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.InputFields {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.InputQuestion {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+}
+
+.InputQuestionTitle {
+    font-family: 'Lato-Bold';
+    font-size: small;
+    width: inherit;
+    margin-bottom: -7px;
+    margin-left: 5px;
+}
+
+.InputQuestionValue {
+    width: inherit;
+}
+
+/*
+.InputQuestionValue input {
+    width: 294px;
+    border-radius: 10px;
+    border-width: 1px;
+    padding: 5px;
+    margin-left: -2px;
+}*/
+
+.InputQuestionTypeText {
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-width: 1px;
+}
+
+.InputQuestionTypeSelect {
+    width: 100%;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.InputAreaSubmitContainer {
+    margin-top: 20px;
+}
+
+.ButtonRoundedStyle {
+    display: inline-flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-inline: 20px;
+    border-radius: 10px;
+    border-color: transparent;
+    background-color: #4D96D9;
+    font-weight:600;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ButtonHoverEffect {
+    transition: transform 0.3s;
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+}
