@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +30,17 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +52,27 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'budget_api',
     'corsheaders',
-]
+    'rest_auth',]
+
+
+
+
+SIMPLE_JWT = {
+    'ALGORITHM': 'HS256',  # Algorithm used to sign the tokens
+    'SIGNING_KEY': SECRET_KEY,  # Django's SECRET_KEY by default
+    'VERIFYING_KEY': None,
+    'ROTATE_REFRESH_TOKENS': False,  # When set to True, a new refresh token is returned every time a token is refreshed.
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Type of Authorization header. This is used to specify the prefix in the Authorization header value.
+    'USER_ID_FIELD': 'id',  # Field name to use as the unique user identifier.
+    'USER_ID_CLAIM': 'user_id',  # Claim name to use for the unique user identifier.
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),  # Which classes to use for generating tokens.
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',  # Name of the claim that has the original expiration of the token.
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=120),  # Duration for which the token is valid.
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),  # Duration for which the token can be refreshed.
+    'ROTATE_REFRESH_TOKENS': False,  # If True, the refresh token is rotated every time a request is made.
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
