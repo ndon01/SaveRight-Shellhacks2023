@@ -12,6 +12,7 @@ import Home from './Views/Authorized/Home/Home'
 import { createContext, useEffect, useMemo, useState } from 'react';
 
 import { userContext } from './Context/UserContext';
+import PieChartComponent from './Components/piechart';
 
 function App() {
   const [username, setUsername] = useState('')
@@ -45,7 +46,7 @@ function App() {
                   <Route path="/home" element={<Home/>} />
           </>
         }, [authToken,])}
-
+        <Route path="/pieChart" element={<PieChartComponent/>} />
         <Route path="*" element={<PageNotFound/>} />
       </Routes>
     </userContext.Provider>

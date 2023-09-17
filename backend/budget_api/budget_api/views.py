@@ -120,7 +120,7 @@ def get_expenses_and_budget(request):
 @check_token()
 def expense_by_id(request, id):
     try:
-        expenses = Expense.objects.get(username=request.user.get_username())
+        expenses = Expense.objects.filter(username=request.user.get_username())
         expense = expenses.get(id=id)
     except Expense.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -146,7 +146,7 @@ def expense_by_id(request, id):
 def income_by_id(request, id):
     try:
         thisUser = request.user
-        incomes = Income.objects.get(username=thisUser.get_username())
+        incomes = Income.objects.filter(username=thisUser.get_username())
         income = incomes.get(id=id)
     except Income.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
