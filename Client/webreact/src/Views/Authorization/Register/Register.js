@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import GlobalConfig from '../../../Util/Config'
 
+import imglink from '../../../SaveRight.png'
+
 function Login() {
     const [firstName, setFirstName] = useState("");
   const [username, setUsername] = useState("");
@@ -50,12 +52,7 @@ function Login() {
     <div className={styles.PageContainer}>
         {/*Title*/}
         <div>
-            <div className={styles.SaveRightLogoSave}>
-                Save
-            </div>
-            <div className={styles.SaveRightLogoRight}>
-                Right
-            </div>
+        <img src={imglink} width={250} height={250} style={{margin:"-20px"}} />
         </div>
         {/*Login Form*/}
         <form onSubmit={loginSubmission} id="LoginForm">
