@@ -109,17 +109,21 @@ function Login() {
             </div>
         </form>
         <div className={styles.InputAreaSubmitContainer}>
-        <div
+        <div className={styles.transportarea}>
+        Already have an Account?
+      <div
           className={
             styles.ButtonRoundedStyle + "\n" + styles.ButtonHoverEffect
           }
+          style={{backgroundColor:"white", border: '0.5px solid #4D96D9' }}
         >
-          <Link
+        <Link
             style={{ textDecoration: "None", color: "black" }}
             to={"/login/"}
           >
-            Log into an Account here
+            Click Here
           </Link>
+        </div>
         </div>
       </div>
     </div>

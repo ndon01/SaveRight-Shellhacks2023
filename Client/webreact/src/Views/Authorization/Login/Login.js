@@ -37,9 +37,8 @@ function Login() {
   return (
     <div className={styles.PageContainer}>
       {/*Title*/}
-      <div>
-        <div className={styles.SaveRightLogoSave}>Save</div>
-        <div className={styles.SaveRightLogoRight}>Right</div>
+      <div className={styles.SaveRightLogoContainer}>
+        
       </div>
       {/*Login Form*/}
       <form onSubmit={loginSubmission} id="LoginForm">
@@ -89,10 +88,22 @@ function Login() {
         </div>
       </form>
       <div className={styles.InputAreaSubmitContainer}>
-        <div>
-            <Link To={'/register/'}>
-            Create an Account Here
-            </Link>
+      
+      <div className={styles.transportarea}>
+        Need to create an Account?
+      <div
+          className={
+            styles.ButtonRoundedStyle + "\n" + styles.ButtonHoverEffect
+          }
+          style={{backgroundColor:"white", border: '0.5px solid #4D96D9' }}
+        >
+        <Link
+            style={{ textDecoration: "None", color: "black" }}
+            to={"/register/"}
+          >
+            Click Here
+          </Link>
+        </div>
         </div>
       </div>
     </div>
