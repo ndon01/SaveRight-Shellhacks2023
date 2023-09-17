@@ -5,6 +5,7 @@ import { userContext } from '../../Context/UserContext'
 
 function Navbar() {
   const value = useContext(userContext)
+  console.log(value)
   return (
     <nav className="navbarwrapper">
       <div>
@@ -13,7 +14,12 @@ function Navbar() {
         <button>Learn</button>
       </div>
       <div>
-        {value.token}
+        {value.username}
+        <button onClick={function() {
+          localStorage.clear()
+          value.setToken('')
+          value.setUsername('')
+        }}>logout</button>
       </div>
     </nav>
   

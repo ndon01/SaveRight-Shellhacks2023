@@ -1,13 +1,65 @@
 import Table from "react-bootstrap/Table";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../Components/Navbar/Navbar";
 import "./Style.css";
+
+import GlobalConfig from "../../../Util/Config"
 
 import axios from 'axios';
 
 function Home() {
 
+  const [transactions, setTransactions] = useState([])
+  const [budgets, setBudgets] = useState([])
+
+
+  useEffect(() => {
+    axios.get(GlobalConfig.SaveRightAPIURL + "/transactions/", {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    }).then((data) => {
+      if(data.status === 200) {
+        let expenses = data.data.expenses
+        let incomes = data.data.incomes
+        let newData = []
+        for (let i = 0; i < expenses.length; i++) {
+          let data = expenses[i]
+          data["transactionType"] = "expense"
+          newData[newData.length] = data
+        }
+        for (let i = 0; i < incomes.length; i++) {
+          let data = incomes[i]
+          data["transactionType"] = "income"
+          newData[newData.length] = data
+        
+        }
+        setTransactions(newData)
+        console.log(newData)
+      }
+    }).catch(console.log)
+    axios.get(GlobalConfig.SaveRightAPIURL + "/budgets/user/", {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    }).then((data) => {
+      if(data.status === 200) {
+        let newData = []
+        
+        for (let i = 0; i < data.data.length; i++) {
+          let data = data.data[i]
+          newData[newData.length] = data
+        }
+        setBudgets(newData)
+        console.log(newData)
+      }
+    }).catch(console.log)
+  }, [])
+
+  useEffect(()=>{
+    console.log(transactions)
+  }, [transactions])
 
   function createDeposit() {
     const DepositNameElement = document.getElementById("DepositNameValue");
@@ -49,9 +101,19 @@ function Home() {
       "date": DepositDateValue
     }
 
-    axios.post("http://127.0.0.1:8000/incomes/", postData)
+    axios.post(GlobalConfig.SaveRightAPIURL + "/incomes/", postData, {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    })
     .then(function (response) {
-      console.log(response);
+      if (response.status === 201) {
+        let data = response.data
+        data["transactionType"] = "income"
+        
+        setTransactions(transactions.concat(data))
+        console.log(transactions)
+      }
     })
     .catch(function (error) {
       console.log(error);
@@ -110,9 +172,19 @@ function Home() {
       
     }
 
-    axios.post("http://127.0.0.1:8000/expenses/", postData)
+    axios.post(GlobalConfig.SaveRightAPIURL + "/expenses/", postData, {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    })
     .then(function (response) {
-      console.log(response);
+      if (response.status === 201) {
+        let data = response.data
+        data["transactionType"] = "expense"
+        
+        setTransactions(transactions.concat(data))
+        console.log(transactions)
+      }
     })
     .catch(function (error) {
       console.log(error);
@@ -161,9 +233,18 @@ function Home() {
       "color": BudgetColorValue
     }
 
-    axios.post("http://127.0.0.1:8000/budgets/", postData)
+    axios.post(GlobalConfig.SaveRightAPIURL + "/budgets/", postData, {
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    })
     .then(function (response) {
-      console.log(response);
+      if (response.status === 201) {
+        let data = response.data
+        
+        setBudgets(budgets.concat(data))
+        console.log(transactions)
+      }
     })
     .catch(function (error) {
       console.log(error);
@@ -252,7 +333,11 @@ function Home() {
                 </div>
                 <div className="InputQuestionValue">
                   <select id="WithdrawlBudgetTypeValue" className="InputQuestionTypeSelect">
-                    <option value="None">None</option>
+                  <option value="None">None</option>
+                    {budgets.map(function(v, i){
+                      return <option key={i} value={v.id}>{v.name}</option>
+                    })}
+                    
                   </select>
                 </div>
               </div>
@@ -324,6 +409,7 @@ function Home() {
           >
             <thead>
               <tr className="TransactionTableRowWrapper">
+                <th className="DataColumnHeader">Date</th>
                 <th className="DataColumnHeader">Title</th>
                 <th className="DataColumnHeader">Type</th>
                 <th className="DataColumnHeader">Amount</th>
@@ -333,22 +419,66 @@ function Home() {
             </thead>
 
             <tbody>
-              <tr className="TransactionTableRowWrapper">
-                <td className="DataFieldClass">Job</td>
-                <td className="DataFieldClass">Deposit</td>
-                <td className="DataFieldClass">+10000</td>
-                <td className="BudgetColumnDataField">-</td>
-                <td><img src="remove.png" className="RemoveTTableItemImage ButtonHoverEffect"/></td>
-              </tr>
-              <tr className="TransactionTableRowWrapper">
-                <td className="DataFieldClass">Club</td>
-                <td className="DataFieldClass">Withdrawl</td>
-                <td className="DataFieldClass">-1200</td>
-                <td className="BudgetColumnDataField">
-                  <div className="BudgetStickerContainer">Social</div>
-                </td>
-                <td><img src="remove.png" className="RemoveTTableItemImage ButtonHoverEffect"/></td>
-              </tr>
+              {transactions.map(function(transaction, i) {
+                console.log(transaction)
+
+                let budgetName = ""
+                let budgetColor = ""
+
+                if (transaction["budget"]) {
+                  for (let i = 0; i < budgets.length; i++) {
+                    if (budgets[i].id == transaction.budget) {
+                      
+                      budgetName = budgets[i].name
+                      budgetColor = budgets[i].color
+                    }
+                  }
+                }
+
+                return <>
+                  <tr key={i} className="TransactionTableRowWrapper">
+                    <td className="DataFieldClass">{transaction.date}</td>
+                    <td className="DataFieldClass">{transaction.name}</td>
+                    <td  className="DataFieldClass">{transaction.transactionType}</td>
+                    <td  className="DataFieldClass">{transaction.transactionType === "income" ? "+" : "-"}{transaction.amount}</td>
+                    <td className="BudgetColumnDataField">
+                      {budgetName !== "" ? <div style={{backgroundColor:budgetColor.toLocaleLowerCase()}} className="BudgetStickerContainer">{budgetName}</div> : "-"}
+                    </td>
+                    <td ><img  src="remove.png" className="RemoveTTableItemImage ButtonHoverEffect" onClick={function(){
+                      if(transaction.transactionType === "income") {
+                        axios.delete(GlobalConfig.SaveRightAPIURL + "/incomes/" + transaction.id + "/", {
+                          headers: {
+                            Authorization: localStorage.getItem("token")
+                          }
+                        }).then((data) => {
+                          if (data.status === 204) {
+                            
+                            setTransactions(transactions.filter((value) => {
+                              return value.id !== transaction.id
+                            }))
+                            console.log(transactions)
+                          }
+                        }).catch(console.log)
+                      } else {
+                        // expense
+                        axios.delete(GlobalConfig.SaveRightAPIURL + "/expenses/" + transaction.id + "/", {
+                          headers: {
+                            Authorization: localStorage.getItem("token")
+                          }
+                        }).then((data) => {
+                          if (data.status === 204) {
+                            
+                            setTransactions(transactions.filter((value) => {
+                              return value.id !== transaction.id
+                            }))
+                            console.log(transactions)
+                          }
+                        }).catch(console.log)
+                      }
+                    }}/></td>
+                  </tr>
+                </>
+              })}
             </tbody>
           </Table>
         </div>

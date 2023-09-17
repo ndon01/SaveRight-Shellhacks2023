@@ -1,5 +1,5 @@
 import PageNotFound from './Views/Errors/PageNotFound';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './Styles/Base.css';
 import './Styles/App.css';
 
@@ -9,7 +9,7 @@ import Register from './Views/Authorization/Register/Register';
 
 import Home from './Views/Authorized/Home/Home'
 
-import { createContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { userContext } from './Context/UserContext';
 
@@ -21,46 +21,55 @@ import GlobalConfig from "./Util/Config";
 import PieChartComponent from './Components/piechart';
 
 function App() {
+
   const [username, setUsername] = useState('')
   const [authToken, setToken] = useState('')
-
+  
   const value = useMemo(() => ({
     username, authToken, setUsername, setToken
   }), [username, authToken])
 
   useEffect(() => {
-    if(authToken !== '' && username == '') {
-      axios.post(GlobalConfig.SaveRightAPIURL + "/userInfo/", {}, {headers:{
-        Authorization: authToken
-      }}).then((data) => {
-        if(data["username"]) {
-          setToken(data["username"])
+    var lstoken = localStorage.getItem("token")
+  
+    if(lstoken && username == "") {
+      axios.get(GlobalConfig.SaveRightAPIURL + "/userInfo/",{headers:{Authorization:lstoken}} ).then((data) => {
+        if (data.status === 200) {
+          localStorage.setItem("userdata", data.data)
+          setUsername(data.data.username)
+          setToken(lstoken)
+        } else {
+          localStorage.removeItem("token")
         }
       }).catch(console.log)
     }
-  }, [username, authToken])
+  })
 
   return (
-    <userContext.Provider value={value}>
-      <Routes>
+    <>
+      <userContext.Provider value={value}>
+      <BrowserRouter>
+        <Routes>
 
-        {
-          authToken == "" ?  <>
-                <Route path="/" element={<LandingPage/>} />
-                <Route path="/login" element={<Login/>} />
-                <Route path="/register" element={<Register/>} />
-              </>
-            : <>
-                  <Route path="/" element={<Home/>} />
-                  <Route path="/login" element={<Home/>} />
-                  <Route path="/register" element={<Home/>} />
-                  <Route path="/home" element={<Home/>} />
-          </>
-        }
+          {
+            authToken == "" &&  <>
+                  <Route path="/" element={<LandingPage/>} />
+                  <Route path="/login" element={<Login/>} />
+                  <Route path="/register" element={<Register/>} />
+                </>
+              || <>
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/login" element={<Home/>} />
+                    <Route path="/register" element={<Home/>} />
+                    <Route path="/home" element={<Home/>} />
+            </>
+          }
         <Route path="/pieChart" element={<PieChartComponent/>} />
-        <Route path="*" element={<PageNotFound/>} />
-      </Routes>
-    </userContext.Provider>
+          <Route path="*" element={<PageNotFound/>} />
+        </Routes>
+        </BrowserRouter>
+      </userContext.Provider>
+    </>
   );
 }
 
