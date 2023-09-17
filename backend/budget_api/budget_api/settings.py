@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'budget_api',
     'corsheaders',
     'rest_auth',
-    'ref_framework_simplejwt',    
+    'rest_framework_simplejwt',    
 ]
 
 
@@ -86,7 +86,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-
 ]
 
 ROOT_URLCONF = 'budget_api.urls'

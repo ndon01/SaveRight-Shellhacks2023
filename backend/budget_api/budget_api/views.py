@@ -181,5 +181,6 @@ class LoginView(APIView):
 
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
+            print(f"User Logged in: {token}")
             return Response({'token': token}, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
