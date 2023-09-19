@@ -1,4 +1,12 @@
-# "**Save Right**" created for Shellhacks 2023
+# **Save Right** - Budgeting and Financial Literacy
+This project was originally created for Shellhacks 2023.
+
+The Developers
+-
+This Full Stack Project was created by [**Nicholas Donahue**](https://www.linkedin.com/in/nicholasdonahue/) and [**Joshua Lopes**](https://www.linkedin.com/in/joshua-lopes-aaab05188/) from **Florida International University**.
+
+
+# Our Product
 
 
 ## **Inspiration**
