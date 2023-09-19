@@ -7,7 +7,10 @@ This Full Stack Project was created by [**Nicholas Donahue**](https://www.linked
 
 
 # Our Product
-
+![Landing Page](https://raw.githubusercontent.com/ndon01/SaveRight-Shellhacks2023/main/Web%20capture_18-9-2023_213750_localhost.jpeg)
+![Registration Page](https://github.com/ndon01/SaveRight-Shellhacks2023/blob/main/registerpageimage.png)
+![Login Page](https://github.com/ndon01/SaveRight-Shellhacks2023/blob/main/loginpageimage.png)
+![User Dashboard](https://github.com/ndon01/SaveRight-Shellhacks2023/blob/main/budgetpageimage.png)
 
 ## **Inspiration**
 Our inspiration for this app stemmed from our own experiences as college students. Navigating the initial struggle of financial responsibilities for the first time, we felt the weight of every expenditure and the anxiety of potentially making uninformed decisions. We realized that many of our peers shared this struggle, facing the daunting challenge of budgeting with limited guidance. This app is our response to that collective need, aiming to equip students with the tools and insights to manage their finances confidently.
