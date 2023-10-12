@@ -10,6 +10,8 @@ import GlobalConfig from "../../../Util/Config"
 
 import axios from 'axios';
 
+import styles from './HomeStyles.module.css'
+
 function Home() {
   
 
@@ -297,7 +299,7 @@ function Home() {
               </div>
             </div>
             <div className="InputAreaSubmitContainer">
-              <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createDeposit}>Create Deposit</button>
+              <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createDeposit}>Track</button>
             </div>
           </div>
                     {/* Withdrawl Area */}
@@ -347,7 +349,7 @@ function Home() {
             
             </div>
             <div className="InputAreaSubmitContainer">
-              <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createWithdrawl}>Create Withdrawl</button>
+              <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createWithdrawl}>Track</button>
             </div>
           </div>
 
@@ -390,7 +392,7 @@ function Home() {
               </div>
             </div>
             <div className="InputAreaSubmitContainer">
-              <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createBudget}>Create Budget</button>
+              <button className="ButtonRoundedStyle ButtonHoverEffect" onClick={createBudget}>Create</button>
             </div>
           </div>
         </div>
